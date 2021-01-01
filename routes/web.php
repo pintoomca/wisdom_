@@ -13,13 +13,14 @@
 
 Auth::routes();
 
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
     Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','RoleController');
     Route::resource('users','UserController');
    Route::resource('products','ProductController');
    Route::resource('orders','OrderController');
 });
+//Product List
+Route::get('/','FrontController@index');
+Route::get('buy/{id}','FrontController@buy');
+Route::post('order-place','FrontController@orderStore');
+Route::get('thankyou/{id}','FrontController@thankyou');

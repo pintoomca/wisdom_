@@ -111,8 +111,6 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $this->validate($request,[
-            'order_id' => 'required',
-            'product_id' => 'required',
             'quantity' => 'required',
             'price' => 'required',
             'total_price' => '',
@@ -120,7 +118,6 @@ class OrderController extends Controller
             'user_mobile' => '',
             'user_email' => '',
             'user_address' => '',
-            'discount' => '',
             'status' => 'required',
         ]);
         $input = $request->all();

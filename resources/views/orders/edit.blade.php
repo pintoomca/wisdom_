@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Edit Product</h2>
+                <h2>Edit Order</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('products.index') }}"> Back</a>
+                <a class="btn btn-primary" href="{{ route('orders.index') }}"> Back</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
         </div>
     @endif
 
-    {!! Form::model($product, ['method' => 'PATCH','route' => ['products.update', $product->id],'files' => true]) !!}
+    {!! Form::model($order, ['method' => 'PATCH','route' => ['orders.update', $order->id],'files' => true]) !!}
     	@csrf
         @method('PUT')
 
@@ -33,39 +33,67 @@
          <div class="row">
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
-		            <strong>Name:</strong>
-		            <input type="text" name="name" value="{{ $product->name }}" class="form-control" placeholder="Name">
+		            <strong>Product Detail:</strong>
+                    @php
+                    $product = DB::table('products')->where('id', $order->product_id)->first();
+                    $product->product_image = (!empty($product->product_image))?"/wisdom/storage/app/public/".$product->product_image:"https://dummyimage.com/600x400/55595c/fff";
+                    @endphp
+                    <img class="card-img-top" src="{{$product->product_image}}" width="347" height="231" alt="Card image cap">
+		            <h2>{{$product->name}}</h2>
 		        </div>
 		    </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Quantity:</strong>
-		            <input type="number" name="quantity" class="form-control" placeholder="Quantity" value="{{ $product->quantity }}">
+		            <input type="number" name="quantity" class="form-control" placeholder="Quantity" value="{{ $order->quantity }}">
 		        </div>
 		    </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Price:</strong>
-		            <input type="text" name="price" class="form-control" placeholder="Price" value="{{ $product->price }}">
+		            <input type="text" name="price" class="form-control" placeholder="Price" value="{{ $order->price }}">
 		        </div>
 		    </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
-		            <strong>Image:</strong>
-                    {!! Form::file('product_image') !!}
+		            <strong>Price:</strong>
+		            <input type="text" name="price" class="form-control" placeholder="Price" value="{{$order->price}}" readonly>
 		        </div>
-                <img src="/wisdom/storage/app/public/{{$product->product_image}}" height="75" width="75"/ >
 		    </div>
-		    <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
-		            <strong>Detail:</strong>
-		            <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail">{{ $product->detail }}</textarea>
+		            <strong>Total Price:</strong>
+		            <input type="text" id="total_price" name="total_price" class="form-control" placeholder="Total Price" value="{{$order->total_price}}" readonly>
 		        </div>
 		    </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
+                    <strong>Name:</strong>
+                    {!! Form::text('user_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Mobile:</strong>
+                    {!! Form::text('user_mobile', null, array('placeholder' => 'Mobile','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Email:</strong>
+                    {!! Form::text('user_email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Address:</strong>
+                    {!! Form::text('user_address', null, array('placeholder' => 'Address','class' => 'form-control')) !!}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
                     <strong>Order Status:</strong>
-                    {!! Form::select('status', ['1' => 'Active', '2' => 'InActive'], null, ['class' => 'form-control']) !!}
+                    {!! Form::select('status', ['New' => 'New', 'Processing' => 'Processing','Delivered' => 'Delivered','Returned' => 'Returned'], null, ['class' => 'form-control']) !!}
                 </div>
             </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
